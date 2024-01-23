@@ -13,6 +13,8 @@
 		00ACA9922B5FEC9B009A5B55 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00ACA9912B5FEC9B009A5B55 /* Preview Assets.xcassets */; };
 		00ACA99A2B60039D009A5B55 /* environment.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00ACA9992B60039D009A5B55 /* environment.plist */; };
 		00ACA99C2B600BBD009A5B55 /* PListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ACA99B2B600BBD009A5B55 /* PListManager.swift */; };
+		00ACA99E2B6014BB009A5B55 /* UnsplashAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ACA99D2B6014BB009A5B55 /* UnsplashAPI.swift */; };
+		00ACA9A02B601A9D009A5B55 /* FeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ACA99F2B601A9D009A5B55 /* FeedState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		00ACA9982B5FF893009A5B55 /* MoviePlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MoviePlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		00ACA9992B60039D009A5B55 /* environment.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = environment.plist; sourceTree = "<group>"; };
 		00ACA99B2B600BBD009A5B55 /* PListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PListManager.swift; sourceTree = "<group>"; };
+		00ACA99D2B6014BB009A5B55 /* UnsplashAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashAPI.swift; sourceTree = "<group>"; };
+		00ACA99F2B601A9D009A5B55 /* FeedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +61,8 @@
 		00ACA9892B5FEC9A009A5B55 /* UnsplashApp */ = {
 			isa = PBXGroup;
 			children = (
+				00ACA99D2B6014BB009A5B55 /* UnsplashAPI.swift */,
+				00ACA99F2B601A9D009A5B55 /* FeedState.swift */,
 				00ACA99B2B600BBD009A5B55 /* PListManager.swift */,
 				00ACA98A2B5FEC9A009A5B55 /* UnsplashAppApp.swift */,
 				00ACA98C2B5FEC9A009A5B55 /* ContentView.swift */,
@@ -146,6 +152,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00ACA9A02B601A9D009A5B55 /* FeedState.swift in Sources */,
+				00ACA99E2B6014BB009A5B55 /* UnsplashAPI.swift in Sources */,
 				00ACA98D2B5FEC9A009A5B55 /* ContentView.swift in Sources */,
 				00ACA99C2B600BBD009A5B55 /* PListManager.swift in Sources */,
 				00ACA98B2B5FEC9A009A5B55 /* UnsplashAppApp.swift in Sources */,

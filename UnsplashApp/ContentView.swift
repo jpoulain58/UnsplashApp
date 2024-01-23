@@ -52,24 +52,13 @@ struct ContentView: View {
     
     // Déclaration d'une variable d'état, une fois remplie, elle va modifier la vue
     @State var imageList: [UnsplashPhoto] = []
-    
+    @StateObject var feedState = FeedState()
+
     // Déclaration d'une fonction asynchrone
     func loadData() async {
-        // Créez une URL avec la clé d'API
-        let url = URL(string: "https://api.unsplash.com/photos?client_id=\(ConfigurationManager.instance.plistDictionnary.clientId)")!
 
         do {
-            // Créez une requête avec cette URL
-            let request = URLRequest(url: url)
-                
-            // Faites l'appel réseau
-            let (data, _) = try await URLSession.shared.data(for: request)
-            
-            // Transformez les données en JSON
-            let deserializedData = try JSONDecoder().decode([UnsplashPhoto].self, from: data)
-
-            // Mettez à jour l'état de la vue
-            imageList = deserializedData
+            feedState.loadData()
 
         } catch {
             print("Error: \(error)")

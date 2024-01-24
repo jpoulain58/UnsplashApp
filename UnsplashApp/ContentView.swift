@@ -25,9 +25,14 @@ struct UnsplashPhoto: Codable, Identifiable {
 
 struct User: Codable {
     let name: String
+    let links: ProfileLink?
+    let photos: ProfileImage?
+
     
     enum CodingKeys: String, CodingKey{
-        case name
+        case name = "username"
+        case links = "links"
+        case photos = "profile_image"
     }
 }
 
@@ -44,6 +49,14 @@ struct UnsplashPhotoUrls: Codable {
         case regular
         case small
         case thumb
+    }
+}
+
+struct ProfileLink: Codable {
+    let profile: String?
+
+    enum CodingKeys: String, CodingKey{
+        case profile = "html"
     }
 }
 
@@ -70,6 +83,14 @@ struct CoverPhoto: Codable {
         case id
         case slug
         case url = "urls"
+    }
+}
+
+struct ProfileImage: Codable {
+    let medium: String
+    
+    enum CodingKeys: String, CodingKey{
+        case medium
     }
 }
 
@@ -147,15 +168,17 @@ struct ContentView: View {
                 ScrollView{
                     LazyVGrid(columns: columns){
                         if let unwrappedPhotos = feedState.homeFeed  {
-                            ForEach(unwrappedPhotos){image in
-                                AsyncImage(url: URL(string: image.url.regular)) { image in
-                                    image.resizable()
-                                } placeholder: {
-                                    ProgressView()
+                                ForEach(unwrappedPhotos){image in
+                                    NavigationLink(destination: ImageDetailsView(image: image)) {
+                                    AsyncImage(url: URL(string: image.url.regular)) { image in
+                                        image.resizable()
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    .frame(height: 150)
+                                    .cornerRadius(/*@START_MENU_TOKEN@*/12.0/*@END_MENU_TOKEN@*/)
+                                    
                                 }
-                                .frame(height: 150)
-                                .cornerRadius(/*@START_MENU_TOKEN@*/12.0/*@END_MENU_TOKEN@*/)
-                                
                             }
                         }
                         else {

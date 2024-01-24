@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 struct UnsplashAPI{
 
@@ -57,5 +58,7 @@ struct UnsplashAPI{
         
         return components.url
     }
+    
+    
 
 }

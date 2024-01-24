@@ -1,58 +1,48 @@
+import Combine
 import Foundation
 
 class FeedState: ObservableObject {
     @Published var homeFeed: [UnsplashPhoto]?
     @Published var topics: [Topics]?
 
-    func fetchHomeFeedPhotos() async {
-        guard let url = UnsplashAPI.feedUrlPhotos() else {
-            print("Erreur : URL pas valide")
-            return
-        }
+    private var cancellables = Set<AnyCancellable>()
 
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let photos = try JSONDecoder().decode([UnsplashPhoto].self, from: data)
-            DispatchQueue.main.async {
-                self.homeFeed = photos
-            }
-        } catch {
-            print("Erreur lors du chargement des donées : (error) \(error)")
-        }
+    func fetchHomeFeedPhotos() {
+        guard let url = UnsplashAPI.feedUrlPhotos() else { return }
+
+        URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: [UnsplashPhoto].self, decoder: JSONDecoder())
+            .replaceError(with: [])
+            .receive(on: DispatchQueue.main)
+            .map { Optional($0) }
+            .assign(to: \.homeFeed, on: self)
+            .store(in: &cancellables)
     }
     
-    func fetchHomeFeedTopics() async {
-        guard let url = UnsplashAPI.feedUrlTopics() else {
-            print("Erreur : URL pas valide")
-            return
-        }
+    func fetchHomeFeedTopics() {
+        guard let url = UnsplashAPI.feedUrlTopics() else { return }
 
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let photos = try JSONDecoder().decode([Topics].self, from: data)
-            DispatchQueue.main.async {
-                self.topics = photos
-            }
-        } catch {
-            print("Erreur lors du chargement des donées : (error) \(error)")
-        }
+        URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: [Topics].self, decoder: JSONDecoder())
+            .replaceError(with: [])
+            .receive(on: DispatchQueue.main)
+            .map { Optional($0) }
+            .assign(to: \.topics, on: self)
+            .store(in: &cancellables)
     }
     
-    func fetchPhotosForTopic(topicSlug: String) async {
-        guard let url = UnsplashAPI.feedUrlPhotosForTopic(topicSlug: topicSlug) else {
-            print("Erreur : URL pas valide")
-            return
-        }
+    func fetchPhotosForTopic(topicSlug: String) {
+        guard let url = UnsplashAPI.feedUrlPhotosForTopic(topicSlug: topicSlug) else { return }
 
-        do {
-            print(url)
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let photos = try JSONDecoder().decode([UnsplashPhoto].self, from: data)
-            DispatchQueue.main.async {
-                self.homeFeed = photos
-            }
-        } catch {
-            print("Erreur lors du chargement des donées : \(error)")
-        }
+        URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: [UnsplashPhoto].self, decoder: JSONDecoder())
+            .replaceError(with: [])
+            .receive(on: DispatchQueue.main)
+            .map { Optional($0) }
+            .assign(to: \.homeFeed, on: self)
+            .store(in: &cancellables)
     }
 }

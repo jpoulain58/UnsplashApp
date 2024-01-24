@@ -18,9 +18,9 @@ struct ImageDetailsView: View {
         VStack {
             Link(destination: URL(string: image.author.links?.profile ?? "")!){
                 if let unwrappedProfileImage = image.author.photos?.medium{
-                    AsyncImage(url: URL(string: unwrappedProfileImage))
+                    AsyncImage(url: URL(string: unwrappedProfileImage)).cornerRadius(12.0)
                 }
-                Text("\(image.author.name)")
+                Text("@\(image.author.name)")
             }
             Picker("Options", selection: $selectedOption) {
                 ForEach(options, id: \.self) {

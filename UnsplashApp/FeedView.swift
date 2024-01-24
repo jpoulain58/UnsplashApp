@@ -27,13 +27,16 @@ struct FeedView: View {
                     LazyVGrid(columns: columns){
                         if let unwrappedPhotos = feedState.homeFeed  {
                             ForEach(unwrappedPhotos){image in
-                                AsyncImage(url: URL(string: image.url.regular)) { image in
-                                    image.resizable()
-                                } placeholder: {
-                                    ProgressView()
+                                NavigationLink(destination: ImageDetailsView(image: image)) {
+                                    
+                                    AsyncImage(url: URL(string: image.url.regular)) { image in
+                                        image.resizable()
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    .cornerRadius(12.0)
+                                    .frame(height: 150)
                                 }
-                                .frame(height: 150)
-                                .cornerRadius(12.0)
                             }
                         }
                         else {

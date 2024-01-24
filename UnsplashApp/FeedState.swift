@@ -1,21 +1,58 @@
-//
-//  FeedState.swift
-//  UnsplashApp
-//
-//  Created by Jeremy POULAIN on 1/23/24.
-//
-
 import Foundation
 
-//@Published var homeFeed: [UnsplashPhoto]?
+class FeedState: ObservableObject {
+    @Published var homeFeed: [UnsplashPhoto]?
+    @Published var topics: [Topics]?
 
-// Fetch home feed doit utiliser la fonction feedUrl de UnsplashAPI
-// Puis assigner le résultat de l'appel réseau à la variable homeFeed
-func fetchHomeFeed() async {
-    //guard let url = UnsplashAPI.feedUrl() else {
-        print("Erreur ! URL non valide")
-        
+    func fetchHomeFeedPhotos() async {
+        guard let url = UnsplashAPI.feedUrlPhotos() else {
+            print("Erreur : URL pas valide")
+            return
+        }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let photos = try JSONDecoder().decode([UnsplashPhoto].self, from: data)
+            DispatchQueue.main.async {
+                self.homeFeed = photos
+            }
+        } catch {
+            print("Erreur lors du chargement des donées : (error) \(error)")
+        }
     }
-//}
+    
+    func fetchHomeFeedTopics() async {
+        guard let url = UnsplashAPI.feedUrlTopics() else {
+            print("Erreur : URL pas valide")
+            return
+        }
 
-// t'en es là sale débile 
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let photos = try JSONDecoder().decode([Topics].self, from: data)
+            DispatchQueue.main.async {
+                self.topics = photos
+            }
+        } catch {
+            print("Erreur lors du chargement des donées : (error) \(error)")
+        }
+    }
+    
+    func fetchPhotosForTopic(topicSlug: String) async {
+        guard let url = UnsplashAPI.feedUrlPhotosForTopic(topicSlug: topicSlug) else {
+            print("Erreur : URL pas valide")
+            return
+        }
+
+        do {
+            print(url)
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let photos = try JSONDecoder().decode([UnsplashPhoto].self, from: data)
+            DispatchQueue.main.async {
+                self.homeFeed = photos
+            }
+        } catch {
+            print("Erreur lors du chargement des donées : \(error)")
+        }
+    }
+}

@@ -15,6 +15,7 @@
 		00ACA99C2B600BBD009A5B55 /* PListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ACA99B2B600BBD009A5B55 /* PListManager.swift */; };
 		00ACA99E2B6014BB009A5B55 /* UnsplashAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ACA99D2B6014BB009A5B55 /* UnsplashAPI.swift */; };
 		00ACA9A02B601A9D009A5B55 /* FeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ACA99F2B601A9D009A5B55 /* FeedState.swift */; };
+		00ACA9A22B6114AA009A5B55 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ACA9A12B6114AA009A5B55 /* FeedView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		00ACA99B2B600BBD009A5B55 /* PListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PListManager.swift; sourceTree = "<group>"; };
 		00ACA99D2B6014BB009A5B55 /* UnsplashAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashAPI.swift; sourceTree = "<group>"; };
 		00ACA99F2B601A9D009A5B55 /* FeedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedState.swift; sourceTree = "<group>"; };
+		00ACA9A12B6114AA009A5B55 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 		00ACA9892B5FEC9A009A5B55 /* UnsplashApp */ = {
 			isa = PBXGroup;
 			children = (
+				00ACA9A12B6114AA009A5B55 /* FeedView.swift */,
 				00ACA99D2B6014BB009A5B55 /* UnsplashAPI.swift */,
 				00ACA99F2B601A9D009A5B55 /* FeedState.swift */,
 				00ACA99B2B600BBD009A5B55 /* PListManager.swift */,
@@ -156,6 +159,7 @@
 				00ACA99E2B6014BB009A5B55 /* UnsplashAPI.swift in Sources */,
 				00ACA98D2B5FEC9A009A5B55 /* ContentView.swift in Sources */,
 				00ACA99C2B600BBD009A5B55 /* PListManager.swift in Sources */,
+				00ACA9A22B6114AA009A5B55 /* FeedView.swift in Sources */,
 				00ACA98B2B5FEC9A009A5B55 /* UnsplashAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

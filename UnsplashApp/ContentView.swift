@@ -47,57 +47,135 @@ struct UnsplashPhotoUrls: Codable {
     }
 }
 
+struct Topics: Codable, Identifiable {
+    let id: String
+    let slug: String
+    let title: String
+    let coverPhoto: CoverPhoto
+    
+    enum CodingKeys: String, CodingKey{
+        case id
+        case slug
+        case title
+        case coverPhoto = "cover_photo"
+    }
+}
+
+struct CoverPhoto: Codable {
+    let id: String
+    let slug: String
+    let url: UnsplashPhotoUrls
+    
+    enum CodingKeys: String, CodingKey{
+        case id
+        case slug
+        case url = "urls"
+    }
+}
 
 struct ContentView: View {
     
     // Déclaration d'une variable d'état, une fois remplie, elle va modifier la vue
-    @State var imageList: [UnsplashPhoto] = []
     @StateObject var feedState = FeedState()
-
+    
     // Déclaration d'une fonction asynchrone
     func loadData() async {
-
-        do {
-            feedState.loadData()
-
-        } catch {
-            print("Error: \(error)")
-        }
+        await feedState.fetchHomeFeedPhotos()
+        await feedState.fetchHomeFeedTopics()
+        isLoading = false
+        
     }
     
     let columns = [GridItem(.flexible(minimum: 150)), GridItem(.flexible(minimum: 150))]
     
-
+    @State var isLoading = true
     
     var body: some View {
-        VStack {
-            NavigationStack{
+        NavigationStack{
+            VStack {
                 Button(action: {
-                                Task {
-                                    await loadData()
+                    Task {
+                        await loadData()
+                        
+                    }
+                }, label: {
+                    Text("Load...")
+                })
+                ScrollView(.horizontal) {
+                    LazyHStack() {
+                        if let unwrappedPhotos = feedState.topics  {
+                            ForEach(unwrappedPhotos){image in
+                                NavigationLink(destination: FeedView(topic: image)) {
+                                    VStack{
+                                        
+                                        AsyncImage(url: URL(string: image.coverPhoto.url.raw)) { image in
+                                            image.resizable()
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                        .frame(width: 118)
+                                        .cornerRadius(12.0)
+                                        Text("\(image.title)")
+                                            .foregroundStyle(Color(.blue))
+                                        
+                                    }
                                 }
-                            }, label: {
-                                Text("Load Data")
-                            })
-                ScrollView{
-                    LazyVGrid(columns: columns){
-                        ForEach(imageList){image in
-                            AsyncImage(url: URL(string: image.url.regular)) { image in
-                                image.resizable()
-                            } placeholder: {
-                                ProgressView()
                             }
-                            .frame(height: 150)
-                            .cornerRadius(/*@START_MENU_TOKEN@*/12.0/*@END_MENU_TOKEN@*/)
                             
                         }
+                        else {
+                            ForEach(0..<12) {_ in
+                                VStack{
+                                    
+                                    Rectangle()
+                                        .frame(width: 118)
+                                        .cornerRadius(12.0)
+                                        .foregroundColor(.gray)
+                                    Text("s")
+                                        .foregroundStyle(Color(.blue))
+                                }
+                            }
+                        }
+                        
+                        
                     }
+                    .padding()
+                    .redacted(reason: isLoading ? .placeholder : .init())
+                    
+                }
+                .frame(height: 120)
+                ScrollView{
+                    LazyVGrid(columns: columns){
+                        if let unwrappedPhotos = feedState.homeFeed  {
+                            ForEach(unwrappedPhotos){image in
+                                AsyncImage(url: URL(string: image.url.regular)) { image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(height: 150)
+                                .cornerRadius(/*@START_MENU_TOKEN@*/12.0/*@END_MENU_TOKEN@*/)
+                                
+                            }
+                        }
+                        else {
+                            ForEach(0..<12) {_ in
+                                Rectangle()
+                                    .frame(height: 150)
+                                    .cornerRadius(12.0)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    }
+                    .redacted(reason: isLoading ? .placeholder : .init())
                 }
                 .clipShape(RoundedRectangle(cornerSize: /*@START_MENU_TOKEN@*/CGSize(width: 20, height: 10)/*@END_MENU_TOKEN@*/))
                 .padding(/*@START_MENU_TOKEN@*/.horizontal/*@END_MENU_TOKEN@*/)
-                .navigationBarTitle("Feed")
             }
+            .navigationBarTitle("Feed")
+            
         }
+        
     }
 }
 
@@ -105,10 +183,10 @@ extension Image {
     func centerCropped() -> some View {
         GeometryReader { geo in
             self
-            .resizable()
-            .scaledToFill()
-            .frame(width: geo.size.width, height: geo.size.height)
-            .clipped()
+                .resizable()
+                .scaledToFill()
+                .frame(width: geo.size.width, height: geo.size.height)
+                .clipped()
         }
     }
 }
